@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,6 +30,31 @@ int main(int argc, char *argv[]) {
         if (strlen(line) == 0) continue;
 
         if (strcmp(line, "q") == 0) break;
+
+                else if (strcmp(line, "w") == 0) {
+            if (sheet->view_row >= 10) sheet->view_row -= 10;
+            else sheet->view_row = 0;
+            print_sheet(sheet);
+        }
+        else if (strcmp(line, "s") == 0) {
+            if (sheet->view_row + 20 <= sheet->rows)
+                sheet->view_row += 10;
+            else if (sheet->view_row + 10 < sheet->rows)
+                sheet->view_row = sheet->rows - 10;
+            print_sheet(sheet);
+        }
+        else if (strcmp(line, "a") == 0) {
+            if (sheet->view_col >= 10) sheet->view_col -= 10;
+            else sheet->view_col = 0;
+            print_sheet(sheet);
+        }
+        else if (strcmp(line, "d") == 0) {
+            if (sheet->view_col + 20 <= sheet->cols)
+                sheet->view_col += 10;
+            else if (sheet->view_col + 10 < sheet->cols)
+                sheet->view_col = sheet->cols - 10;
+            print_sheet(sheet);
+        }
 
         // everything else is unknown for now
         printf("unrecognized cmd\n");
