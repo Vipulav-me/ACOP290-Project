@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 
         if (strcmp(line, "q") == 0) break;
 
-                else if (strcmp(line, "w") == 0) {
+        else if (strcmp(line, "w") == 0) {
             if (sheet->view_row >= 10) sheet->view_row -= 10;
             else sheet->view_row = 0;
             print_sheet(sheet);
