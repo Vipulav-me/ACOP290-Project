@@ -1,8 +1,9 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "sheet.h"
+#include "parser.h"
+#include <ctype.h> 
 
 int main(int argc, char *argv[]) {
     int rows = 10, cols = 10;
@@ -54,6 +55,29 @@ int main(int argc, char *argv[]) {
             else if (sheet->view_col + 10 < sheet->cols)
                 sheet->view_col = sheet->cols - 10;
             print_sheet(sheet);
+        }
+        else if (strcmp(line, "disable_output") == 0) {
+            sheet->output_enabled = 0;
+            printf("Output disabled\n");   // maybe not needed
+        }
+        else if (strcmp(line, "enable_output") == 0) {
+            sheet->output_enabled = 1;
+            print_sheet(sheet);     // show sheet right awayy..
+        }
+            // jump view to a specific cell
+        else if (strncmp(line, "scroll_to ", 10) == 0) {
+            int r, c;
+            if (parse_cell_name(line + 10, &r, &c)) {
+                if (r >= 0 && r < sheet->rows && c >= 0 && c < sheet->cols) {
+                    sheet->view_row = r;
+                    sheet->view_col = c;
+                    if (sheet->output_enabled) print_sheet(sheet);
+                } else {
+                    printf("out of bounds\n");
+                }
+            } else {
+                printf("Invalid cell\n");
+            }
         }
 
         // everything else is unknown for now
