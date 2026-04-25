@@ -225,6 +225,9 @@ static int eval_function(const char *name, const char **pos, Sheet *sheet,
         variance /= n;
         *result = (int)sqrt(variance);
     }
+    else if (strcmp(name, "COUNT") == 0) {
+        *result = n;  // just how many cells
+    }
     else {
         return EVAL_ERR_PARSE;  // unknown function
     }
