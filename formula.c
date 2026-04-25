@@ -36,6 +36,11 @@ static int parse_value(const char **pos, Sheet *sheet,
         s++;
         s = skip_ws(s);
     }
+    else if (*s == '+') {
+        // unary plus, just skip it lol
+        s++;
+        s = skip_ws(s);
+    }
     
     // if it starts with a capital letter, it's probs a cell
     if (isupper(*s)) {
