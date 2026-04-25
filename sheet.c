@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include "sheet.h"
 #include "parser.h"  
+
+// make a new sheet with given rows and cols
 Sheet* create_sheet(int rows,int cols){
     if (rows<=0 || rows>MAX_ROWS || cols<= 0 || cols>MAX_COLS) {
-        return NULL;
+        return NULL;  // bad size
     }
     Sheet *sheet = malloc(sizeof(Sheet));
     (*sheet).rows = rows;
@@ -17,6 +19,7 @@ Sheet* create_sheet(int rows,int cols){
     for(int i=0;i<rows;i++){
         (*sheet).cells[i] = malloc(cols*sizeof(Cell));
 
+        // if malloc fails, clean up and return NULL
         if (!(*sheet).cells[i]){
             perror("malloc");
             for (int k=0; k<i;k++) {
@@ -26,6 +29,7 @@ Sheet* create_sheet(int rows,int cols){
             free(sheet);
             return NULL;
         }
+        // init each cell to empty
         for(int j=0;j<cols;j++){
             (*sheet).cells[i][j].value=0;
             (*sheet).cells[i][j].has_error=0;
@@ -38,22 +42,27 @@ Sheet* create_sheet(int rows,int cols){
     }}
     return sheet;
 }
+
+//print the visible part of the sheet
 void print_sheet(const Sheet *sheet)
 {
     if (!(*sheet).output_enabled){
-        return;
+        return;  // nothing to show
     }
     int r_start = sheet->view_row;
     int c_start = sheet->view_col;
     int r_end = r_start+VIEW_ROWS;
     int c_end = c_start+VIEW_COLS;
 
+    // don't go past the edges
     if (r_end>sheet->rows){
         r_end = sheet->rows;
     }
     if (c_end>sheet->cols){
         c_end = sheet->cols;
     }
+
+    // print column headers (letters)
     printf("%9s", "");
     for(int c=c_start;c<c_end;c++){
         char col_name[MAX_CELL_NAME];
@@ -61,8 +70,10 @@ void print_sheet(const Sheet *sheet)
         printf("%9s",col_name);
     }
     printf("\n");
+
+    // print rows
     for(int r=r_start; r<r_end;r++){
-        printf("%9d", r+1);
+        printf("%9d", r+1);  // row numbers start at 1
         for(int c=c_start; c<c_end;c++){
             if (sheet->cells[r][c].has_error) {
                 printf("%9s","ERR");
@@ -73,6 +84,8 @@ void print_sheet(const Sheet *sheet)
         printf("\n");
     }
 }
+
+// free all the memory we used for the sheet
 void free_sheet(Sheet *sheet){
     if (!sheet){
         return;
