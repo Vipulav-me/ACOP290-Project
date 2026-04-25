@@ -43,6 +43,24 @@ Sheet* create_sheet(int rows,int cols){
     return sheet;
 }
 
+//setting a cell to a plain value, clearing any formula/dependencies (just an update clicked later...)
+void set_cell_value(Sheet *sheet, int row, int col, int value) {
+    if (row < 0 || row >= sheet->rows || col < 0 || col >= sheet->cols) return;
+
+    free(sheet->cells[row][col].formula);
+    sheet->cells[row][col].formula = NULL;
+    free(sheet->cells[row][col].deps);
+    sheet->cells[row][col].deps = NULL;
+    sheet->cells[row][col].dep_count = 0;
+    free(sheet->cells[row][col].rdeps);
+    sheet->cells[row][col].rdeps = NULL;
+    sheet->cells[row][col].rdep_count = 0;
+    sheet->cells[row][col].rdep_cap = 0;
+
+    sheet->cells[row][col].value = value;
+    sheet->cells[row][col].has_error = 0;
+}
+
 //print the visible part of the sheet
 void print_sheet(const Sheet *sheet)
 {
