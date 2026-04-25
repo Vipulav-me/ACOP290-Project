@@ -81,12 +81,11 @@ int main(int argc, char *argv[]) {
         }
         else if (strcmp(line, "disable_output") == 0) {
             sheet->output_enabled = 0;
-            // (extra print kept for now, will fix later)
-            printf("Output disabled\n");
+        
         }
         else if (strcmp(line, "enable_output") == 0) {
             sheet->output_enabled = 1;
-            print_sheet(sheet);
+            ;
         }
         else if (strncmp(line, "scroll_to ", 10) == 0) {
             int r, c;
