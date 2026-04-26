@@ -85,7 +85,8 @@ int main(int argc, char *argv[]) {
         }
         else if (strcmp(line, "enable_output") == 0) {
             sheet->output_enabled = 1;
-            ;
+            if (sheet->output_enabled){
+                print_sheet(sheet);}
         }
         else if (strncmp(line, "scroll_to ", 10) == 0) {
             int r, c;
