@@ -97,8 +97,23 @@ static void recalc_downstream(Sheet *sheet, int start_enc) {
             int deps_buf[MAX_DEPS];
             int dep_count = 0;
             int new_value;
+            
+            int input_has_error = 0;
+            
             int rc = evaluate_formula(cell->formula, sheet, &new_value, deps_buf, &dep_count);
-            if (rc == EVAL_OK) {
+            
+            for (int i = 0; i < dep_count; i++) {
+                int dr = decode_row(deps_buf[i]), dc = decode_col(deps_buf[i]);
+                if (sheet->cells[dr][dc].has_error) {
+                    input_has_error = 1;
+                    break;
+                }
+            }
+    
+            if (input_has_error || rc == EVAL_ERR_DIV0) {
+                cell->has_error = 1;
+                cell->value = 0;  //manual expects 'ERR' display, which print_sheet handles via has_error
+            } else if (rc == EVAL_OK) {
                 cell->value = new_value;
                 cell->has_error = 0;
             } else if (rc == EVAL_ERR_DIV0) {
