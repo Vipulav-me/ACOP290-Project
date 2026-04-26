@@ -61,3 +61,5 @@ make
 # Run with custom size (rows cols)
 ./sheet 5 5
 ./sheet 50 100
+#And if the user wants to recompile
+make clean
