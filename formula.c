@@ -146,6 +146,7 @@ static int collect_range(const char **pos, Sheet *sheet,
             
             // if any cell is broken, the whole range fails
             if (sheet->cells[r][c].has_error) {
+                *n = 0;
                 return EVAL_ERR_DIV0;
             }
             values[(*n)++] = sheet->cells[r][c].value;
