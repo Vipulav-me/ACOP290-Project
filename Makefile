@@ -30,9 +30,9 @@ $(TEST_TARGET): $(TEST_SRC) $(TARGET)
 
 report: $(REPORT_PDF)
 
-$(REPORT_PDF): $(REPORT_SRC)
-	@cd $(REPORT_DIR) && pdflatex -interaction=nonstopmode report.tex > /dev/null 2>&1
-	@cd $(REPORT_DIR) && pdflatex -interaction=nonstopmode report.tex > /dev/null 2>&1
+report:
+	pdflatex report.tex
+	pdflatex report.tex
 
 run: $(TARGET)
 	@./$(TARGET) 10 10
