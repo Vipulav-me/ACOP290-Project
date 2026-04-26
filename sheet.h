@@ -1,3 +1,4 @@
+
 #ifndef SHEET_H
 #define SHEET_H
 
@@ -45,6 +46,7 @@ typedef struct {
 Sheet* create_sheet(int rows, int cols);
 void print_sheet(const Sheet *sheet);
 void free_sheet(Sheet *sheet); 
+void set_cell_value(Sheet *sheet, int row, int col, int value);
 
 // Helper functions
 static inline int encode_cell(int row, int col) { 
